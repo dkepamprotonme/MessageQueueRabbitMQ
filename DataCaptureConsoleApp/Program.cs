@@ -9,7 +9,7 @@ namespace DataCaptureConsoleApp
     public class Program
     {
         public static readonly string InputDirectory = "../../../../Input";
-        public static readonly string InputFileExtension = ".avi";
+        public static readonly string InputFileExtensionSearchPattern = "*.avi";
         private static void Main()
         {
             var factory = new ConnectionFactory() { HostName = Configuration.HostName };
@@ -21,7 +21,7 @@ namespace DataCaptureConsoleApp
                                  autoDelete: false,
                                  arguments: null);
             var directoryPath = Path.GetFullPath(InputDirectory);
-            var files = Directory.EnumerateFiles(directoryPath).Where(x => x.EndsWith(InputFileExtension));
+            var files = Directory.EnumerateFiles(directoryPath, InputFileExtensionSearchPattern);
             foreach (var filePath in files)
             {
                 try
