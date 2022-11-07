@@ -1,14 +1,16 @@
 ﻿using Common;
 using RabbitMQ.Client;
-using System.Text;
 using System.Text.Json;
-namespace DataCaptureEngine
+
+using System.Text;
+
+namespace DataCaptureConsoleApp
 {
-    public class Engine
+    public class Program
     {
         public static readonly string InputDirectory = "../../../../Input";
-        public static readonly string InputFileExtension = ".avi";
-        public static void Start()
+        public static readonly string InputFileExtensionSearchPattern = "*.avi";
+        private static void Main()
         {
             var factory = new ConnectionFactory() { HostName = Configuration.HostName };
             using var connection = factory.CreateConnection();
@@ -19,7 +21,7 @@ namespace DataCaptureEngine
                                  autoDelete: false,
                                  arguments: null);
             var directoryPath = Path.GetFullPath(InputDirectory);
-            var files = Directory.GetFiles(directoryPath).Where(x => x.EndsWith(InputFileExtension));
+            var files = Directory.EnumerateFiles(directoryPath, InputFileExtensionSearchPattern);
             foreach (var filePath in files)
             {
                 try
